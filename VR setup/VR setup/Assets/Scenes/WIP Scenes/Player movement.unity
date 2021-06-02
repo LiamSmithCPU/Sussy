@@ -120,7 +120,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 6dda2bca4a2b172428dc4819e57048db, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: bf51d31d96d03dc49988fe3f1ed70e51, type: 2}
 --- !u!1 &151610459
 GameObject:
   m_ObjectHideFlags: 0
@@ -2240,7 +2240,7 @@ PrefabInstance:
     - target: {fileID: 6478079948414766579, guid: 577077fd9e570cd41ab3319b2fbe4c3a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6478079948414766579, guid: 577077fd9e570cd41ab3319b2fbe4c3a,
         type: 3}
