@@ -99,15 +99,15 @@ public class KeyboardPlayerMovement : MonoBehaviour
             Rigidbody body = hit.collider.GetComponent<Rigidbody>();
             if (body)
             {
-                hit.collider.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                hit.collider.gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                 lastTouched = hit.collider.gameObject;
+                Debug.Log("Hit");
             }
             else
             {
-                if(lastTouched != null)
+                if (lastTouched != null)
                 {
-                lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
-
+                    lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
                 }
             }
 

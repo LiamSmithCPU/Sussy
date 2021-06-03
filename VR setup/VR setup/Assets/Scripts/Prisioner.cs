@@ -17,9 +17,11 @@ public class Prisioner : MonoBehaviour
     public Vector2 size;
     public NavMeshAgent agent;
     public NavMeshPath navMeshPath;
+    public Animator animator;
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
         navMeshPath = new NavMeshPath();
         Vector3 pos;
         pos.x = Random.Range(-size.x / 2, size.x / 2);
@@ -42,6 +44,8 @@ public class Prisioner : MonoBehaviour
             GetRandomTarget();
         }
         agent.SetDestination(target);
+        float blendValue = Vector3.Magnitude(agent.velocity) / agent.speed;
+        animator.SetFloat("Blend", blendValue);
 
         if (Vector3.Distance(transform.position, target) < 2)
         {
