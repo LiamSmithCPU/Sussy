@@ -19,11 +19,17 @@ public class KeyboardPlayerMovement : MonoBehaviour
     float yTiltAmount;
     LineRenderer lineRenderer;
     GameObject lastTouched;
+    bool mounted = false;
+    bool unmounting = false;
+    public Vector3 positionBefore;
+
+    CharacterController characterController;
     #endregion
 
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        characterController = GetComponent<CharacterController>();
     }
 
 
@@ -31,10 +37,22 @@ public class KeyboardPlayerMovement : MonoBehaviour
     void Update()
     {
         passiveLook();
-        if (Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            PointAtTarget();
+            if (!mounted)
+            { 
+                PointAtTarget();
+            }
+            else
+            {
+                mounted = false;
+                characterController.enabled = false;
+                transform.localPosition = positionBefore;
+                characterController.enabled = true;
+            }
         }
+
         xMoveAmount = Input.GetAxis("Horizontal");
         yMoveAmount = Input.GetAxis("Vertical");
 
@@ -46,11 +64,11 @@ public class KeyboardPlayerMovement : MonoBehaviour
         transform.eulerAngles = new Vector3(0.0f, xTiltAmount, 0.0f);
 
         //head.transform.Rotate(new Vector3(-xTiltAmount, yTiltAmount));
+
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-
         Vector3 camForward = head.transform.forward; // Used to have the player move based on the camera direction
         camForward.y = 0;
         camForward.Normalize();
@@ -60,7 +78,10 @@ public class KeyboardPlayerMovement : MonoBehaviour
 
         Vector3 delta = (xMoveAmount * camRight + yMoveAmount * camForward) * moveSpeed * Time.fixedDeltaTime;
 
-        this.transform.position = new Vector3(this.transform.position.x + delta.x, this.transform.position.y + delta.y, this.transform.position.z + delta.z); // actually move 
+        if (!mounted)
+        {
+            characterController.SimpleMove(delta);
+        }
     }
 
     void PointAtTarget()
@@ -73,15 +94,19 @@ public class KeyboardPlayerMovement : MonoBehaviour
         lineRenderer.SetPosition(0, ray.origin);
         lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Rigidbody body = hit.collider.GetComponent<Rigidbody>();
-                if (body)
+       if (Physics.Raycast(ray, out hit))
+       {
+            WatchTower spotLight = hit.collider.GetComponent<WatchTower>();
+
+            if (spotLight)
             {
                 hit.collider.GetComponent<Renderer>().material.SetColor("_Color", new Color(255, 0, 0));
-            }
-                    
-            }
+                positionBefore = transform.position;
+                transform.localPosition = spotLight.mount.localPosition;
+                //transform.SetParent(spotLight.mount);
+                mounted = true;
+            }    
+       }
     }
 
     void passiveLook()
@@ -99,7 +124,7 @@ public class KeyboardPlayerMovement : MonoBehaviour
             Rigidbody body = hit.collider.GetComponent<Rigidbody>();
             if (body)
             {
-                hit.collider.gameObject.transform.GetChild(0).transform.GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                 lastTouched = hit.collider.gameObject;
                 Debug.Log("Hit");
             }
