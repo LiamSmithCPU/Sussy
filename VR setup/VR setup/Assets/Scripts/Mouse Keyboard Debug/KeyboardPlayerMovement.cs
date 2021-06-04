@@ -39,20 +39,20 @@ public class KeyboardPlayerMovement : MonoBehaviour
     {
         passiveLook();
         //if (Input.GetMouseButtonDown(0))
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (!mounted)
-            { 
-                PointAtTarget();
-            }
-            else
-            {
-                mounted = false;
-                characterController.enabled = false;
-                transform.localPosition = positionBefore;
-                characterController.enabled = true;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    if (!mounted)
+        //    {
+        //        PointAtSpotlight();
+        //    }
+        //    else
+        //    {
+        //        mounted = false;
+        //        characterController.enabled = false;
+        //        transform.localPosition = positionBefore;
+        //        characterController.enabled = true;
+        //    }
+        //}
 
         xMoveAmount = Input.GetAxis("Horizontal");
         yMoveAmount = Input.GetAxis("Vertical");
@@ -85,18 +85,18 @@ public class KeyboardPlayerMovement : MonoBehaviour
         }
     }
 
-    void PointAtTarget()
+    void PointAtSpotlight()
     {
         // raycast
         // if pris do something 
         Ray ray = new Ray(head.transform.position, head.transform.forward);
         RaycastHit hit;
 
-        lineRenderer.SetPosition(0, ray.origin);
-        lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
+        //lineRenderer.SetPosition(0, ray.origin);
+        //lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
-       if (Physics.Raycast(ray, out hit))
-       {
+        if (Physics.Raycast(ray, out hit))
+        {
             WatchTower spotLight = hit.collider.GetComponent<WatchTower>();
 
             if (spotLight)
@@ -106,8 +106,8 @@ public class KeyboardPlayerMovement : MonoBehaviour
                 transform.localPosition = spotLight.mount.localPosition;
                 //transform.SetParent(spotLight.mount);
                 mounted = true;
-            }    
-       }
+            }
+        }
     }
 
     void passiveLook()
@@ -133,6 +133,18 @@ public class KeyboardPlayerMovement : MonoBehaviour
                     hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                     lastTouched = hit.collider.gameObject;
                     hitted = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        Transform parent = hit.collider.gameObject.transform.parent.parent;
+                        if (parent)
+                        {
+                            Prisioner prisioner = parent.GetComponent<Prisioner>();
+                            if (prisioner)
+                            {
+                                prisioner.StopSussyBehaviour();
+                            }
+                        }
+                    }
                     Debug.Log("Hit");
                     break;
                 }
