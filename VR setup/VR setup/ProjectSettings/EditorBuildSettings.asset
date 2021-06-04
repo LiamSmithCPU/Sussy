@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LiamDebug.unity
     guid: 0bece9f7b5d57184fa1fb9113a2ac14c
+  - enabled: 0
+    path: Assets/Scenes/WIP Scenes/Intergration.unity
+    guid: 400dfaeba1906f742841f8486744d0df
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d18caba30baa03d4eb85f95ae1d5da8c,
       type: 2}

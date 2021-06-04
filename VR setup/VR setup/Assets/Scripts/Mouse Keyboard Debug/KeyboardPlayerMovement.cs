@@ -10,6 +10,7 @@ public class KeyboardPlayerMovement : MonoBehaviour
     public float cameraRotateSpeed = 50;
     public Color highlightCol;
     public Color passiveCol;
+    public LayerMask mask;
     #endregion
 
     #region Private Variables
@@ -114,28 +115,33 @@ public class KeyboardPlayerMovement : MonoBehaviour
         // raycast
         // if pris do something 
         Ray ray = new Ray(head.transform.position, head.transform.forward);
-        RaycastHit hit;
+        RaycastHit[] hits;
 
         lineRenderer.SetPosition(0, ray.origin);
         lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
-        if (Physics.Raycast(ray, out hit))
+        hits = Physics.RaycastAll(ray);
+        bool hitted = false;
+        for (int i = 0; i < hits.Length; i++)
         {
-            Rigidbody body = hit.collider.GetComponent<Rigidbody>();
-            if (body)
+            RaycastHit hit = hits[i];
+            if (mask == (mask | 1 << hit.collider.gameObject.layer))
             {
-                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
-                lastTouched = hit.collider.gameObject;
-               // Debug.Log("Hit");
-            }
-            else
-            {
-                if (lastTouched != null)
+                Rigidbody body = hit.collider.GetComponent<Rigidbody>();
+                if (body)
                 {
-                    lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
+                    hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                    lastTouched = hit.collider.gameObject;
+                    hitted = true;
+                    Debug.Log("Hit");
+                    break;
                 }
             }
-
+        }
+        if (!hitted && lastTouched != null)
+        {
+            lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
+            lastTouched = null;
         }
     }
 }
