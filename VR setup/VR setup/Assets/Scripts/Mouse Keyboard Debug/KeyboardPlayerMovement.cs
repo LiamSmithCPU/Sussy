@@ -33,7 +33,6 @@ public class KeyboardPlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-
     // Update is called once per frame
     void Update()
     {

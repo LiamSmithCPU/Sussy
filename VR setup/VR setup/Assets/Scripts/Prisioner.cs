@@ -109,7 +109,6 @@ public class Prisioner : MonoBehaviour
         }
 
         animator.SetFloat("Blend", blendValue);
-
     }
 
      void OnTriggerEnter(Collider other)
@@ -118,7 +117,7 @@ public class Prisioner : MonoBehaviour
         {
             if ((fightCoolDown <= 0)&& other.transform.GetComponent<Prisioner>().fightCoolDown<=0 && currentBehaviour!=susBehaviour.escaped && other.transform.GetComponent<Prisioner>().currentBehaviour !=susBehaviour.escaped)
             {
-                //Debug.Log("hit");
+               //Debug.Log("hit");
 
                 float randomNumber = Random.Range(0, 100);
 
