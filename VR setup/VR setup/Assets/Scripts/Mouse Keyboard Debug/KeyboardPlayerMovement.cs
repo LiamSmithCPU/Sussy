@@ -58,7 +58,7 @@ public class KeyboardPlayerMovement : MonoBehaviour
 
         xTiltAmount += Input.GetAxis("Mouse X") * cameraRotateSpeed * Time.deltaTime;
         yTiltAmount -= Input.GetAxis("Mouse Y") * cameraRotateSpeed * Time.deltaTime;
-        yTiltAmount = Mathf.Clamp(yTiltAmount, -90.0f, 90.0f);
+        //yTiltAmount = Mathf.Clamp(yTiltAmount, -90.0f, 90.0f);
 
         head.transform.localRotation = Quaternion.Euler(yTiltAmount, 0.0f, 0.0f);
         transform.eulerAngles = new Vector3(0.0f, xTiltAmount, 0.0f);
@@ -126,15 +126,16 @@ public class KeyboardPlayerMovement : MonoBehaviour
             RaycastHit hit = hits[i];
             if (mask == (mask | 1 << hit.collider.gameObject.layer))
             {
-                Rigidbody body = hit.collider.GetComponent<Rigidbody>();
-                if (body)
-                {
+                
+                
+                    //Debug.Log("Hit");
                     hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                     lastTouched = hit.collider.gameObject;
                     hitted = true;
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        Transform parent = hit.collider.gameObject.transform.parent.parent;
+                   Debug.Log("Hit");
+                    Transform parent = hit.collider.gameObject.transform.parent.parent;
                         if (parent)
                         {
                             Prisioner prisioner = parent.GetComponent<Prisioner>();
@@ -144,9 +145,9 @@ public class KeyboardPlayerMovement : MonoBehaviour
                             }
                         }
                     }
-                    Debug.Log("Hit");
+                 
                     break;
-                }
+                
             }
         }
         if (!hitted && lastTouched != null)
