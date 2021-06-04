@@ -126,7 +126,7 @@ public class KeyboardPlayerMovement : MonoBehaviour
             {
                 hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                 lastTouched = hit.collider.gameObject;
-                Debug.Log("Hit");
+               // Debug.Log("Hit");
             }
             else
             {

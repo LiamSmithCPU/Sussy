@@ -6,8 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Scene.unity
-    guid: df3ec1cd965fc9e4c983dedb9f7b70fa
+    path: Assets/Scenes/Other Scenes/Start.unity
+    guid: a6a1bcf0ddf1af54bae784c8c92f87b5
+  - enabled: 1
+    path: Assets/Scenes/Other Scenes/Win.unity
+    guid: 0de74d485ef38774181a97d8e64ec997
+  - enabled: 1
+    path: Assets/Scenes/Other Scenes/Lose.unity
+    guid: 11a5bacb5b232e944845be1629532bd7
+  - enabled: 1
+    path: Assets/Scenes/LiamDebug.unity
+    guid: 0bece9f7b5d57184fa1fb9113a2ac14c
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d18caba30baa03d4eb85f95ae1d5da8c,
       type: 2}
