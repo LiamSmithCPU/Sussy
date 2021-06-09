@@ -35,6 +35,8 @@ public class Prisioner : MonoBehaviour
 
     public Vector3 escapePos;
 
+    public fight fightImIn;
+
     #endregion Stats
 
     public PrisionManager prisionManagerScript;
@@ -88,7 +90,7 @@ public class Prisioner : MonoBehaviour
                     }
 
                 }
-
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(255, 255, 255));
                 break;
             case susBehaviour.escaping:
                 
@@ -100,16 +102,29 @@ public class Prisioner : MonoBehaviour
                     prisionManagerScript.currentPrisionDamage += prisionManagerScript.escapedPrisonerDamage;
                     currentBehaviour = susBehaviour.escaped;
                 }
-
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 50, 0));
                 break;
             case susBehaviour.fighting:
                 agent.CalculatePath(fightingPos, navMeshPath);
                 agent.SetDestination(fightingPos);
+
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 150, 255));
+              
+                break;
+            case susBehaviour.escaped:
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 255, 0));
                 break;
         }
 
         animator.SetFloat("Blend", blendValue);
-
+        if (currentBehaviour == susBehaviour.fighting)
+        {
+            animator.SetBool("Fighting", true);
+        }
+        else
+        {
+            animator.SetBool("Fighting", false);
+        }
     }
 
      void OnTriggerEnter(Collider other)
@@ -118,7 +133,7 @@ public class Prisioner : MonoBehaviour
         {
             if ((fightCoolDown <= 0)&& other.transform.GetComponent<Prisioner>().fightCoolDown<=0 && currentBehaviour!=susBehaviour.escaped && other.transform.GetComponent<Prisioner>().currentBehaviour !=susBehaviour.escaped)
             {
-                //Debug.Log("hit");
+               //Debug.Log("hit");
 
                 float randomNumber = Random.Range(0, 100);
 
@@ -132,7 +147,7 @@ public class Prisioner : MonoBehaviour
         }
     }
 
-    void GetRandomTarget()
+    public void GetRandomTarget()
     {
         target.x = Random.Range(-size.x / 2, size.x / 2);
         target.z = Random.Range(-size.y / 2, size.y / 2);
@@ -144,6 +159,14 @@ public class Prisioner : MonoBehaviour
         if(currentBehaviour == susBehaviour.escaped)
         {
 
+        }
+        else if(currentBehaviour == susBehaviour.fighting)
+        {
+            fightImIn.fighterB.GetRandomTarget();
+            fightImIn.fighterA.GetRandomTarget();
+            fightImIn.fighterB.currentBehaviour = susBehaviour.casual;
+            fightImIn.fighterA.currentBehaviour = susBehaviour.casual;
+            prisionManagerScript.CurrentFights.Remove(fightImIn);
         }
         else
         {

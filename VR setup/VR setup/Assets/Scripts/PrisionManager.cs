@@ -84,6 +84,12 @@ public class PrisionManager : MonoBehaviour
             Vector3 middleOfFight = new Vector3((A.transform.position.x + B.transform.position.x) / 2, (A.transform.position.y + B.transform.position.y) / 2, (A.transform.position.z + B.transform.position.z) / 2);
             A.fightingPos = middleOfFight;
             B.fightingPos = middleOfFight;
+            A.fightImIn = CurrentFights[CurrentFights.Count - 1];
+            B.fightImIn = CurrentFights[CurrentFights.Count - 1];
+
+            A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,255));
+            B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
+
             //Debug.Log(middleOfFight);
         }
     }

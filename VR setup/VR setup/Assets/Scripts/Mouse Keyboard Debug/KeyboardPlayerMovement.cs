@@ -10,6 +10,7 @@ public class KeyboardPlayerMovement : MonoBehaviour
     public float cameraRotateSpeed = 50;
     public Color highlightCol;
     public Color passiveCol;
+    public LayerMask mask;
     #endregion
 
     #region Private Variables
@@ -32,33 +33,32 @@ public class KeyboardPlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-
     // Update is called once per frame
     void Update()
     {
         passiveLook();
         //if (Input.GetMouseButtonDown(0))
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (!mounted)
-            { 
-                PointAtTarget();
-            }
-            else
-            {
-                mounted = false;
-                characterController.enabled = false;
-                transform.localPosition = positionBefore;
-                characterController.enabled = true;
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    if (!mounted)
+        //    {
+        //        PointAtSpotlight();
+        //    }
+        //    else
+        //    {
+        //        mounted = false;
+        //        characterController.enabled = false;
+        //        transform.localPosition = positionBefore;
+        //        characterController.enabled = true;
+        //    }
+        //}
 
         xMoveAmount = Input.GetAxis("Horizontal");
         yMoveAmount = Input.GetAxis("Vertical");
 
         xTiltAmount += Input.GetAxis("Mouse X") * cameraRotateSpeed * Time.deltaTime;
         yTiltAmount -= Input.GetAxis("Mouse Y") * cameraRotateSpeed * Time.deltaTime;
-        yTiltAmount = Mathf.Clamp(yTiltAmount, -90.0f, 90.0f);
+        //yTiltAmount = Mathf.Clamp(yTiltAmount, -90.0f, 90.0f);
 
         head.transform.localRotation = Quaternion.Euler(yTiltAmount, 0.0f, 0.0f);
         transform.eulerAngles = new Vector3(0.0f, xTiltAmount, 0.0f);
@@ -84,18 +84,18 @@ public class KeyboardPlayerMovement : MonoBehaviour
         }
     }
 
-    void PointAtTarget()
+    void PointAtSpotlight()
     {
         // raycast
         // if pris do something 
         Ray ray = new Ray(head.transform.position, head.transform.forward);
         RaycastHit hit;
 
-        lineRenderer.SetPosition(0, ray.origin);
-        lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
+        //lineRenderer.SetPosition(0, ray.origin);
+        //lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
-       if (Physics.Raycast(ray, out hit))
-       {
+        if (Physics.Raycast(ray, out hit))
+        {
             WatchTower spotLight = hit.collider.GetComponent<WatchTower>();
 
             if (spotLight)
@@ -105,8 +105,8 @@ public class KeyboardPlayerMovement : MonoBehaviour
                 transform.localPosition = spotLight.mount.localPosition;
                 //transform.SetParent(spotLight.mount);
                 mounted = true;
-            }    
-       }
+            }
+        }
     }
 
     void passiveLook()
@@ -114,28 +114,46 @@ public class KeyboardPlayerMovement : MonoBehaviour
         // raycast
         // if pris do something 
         Ray ray = new Ray(head.transform.position, head.transform.forward);
-        RaycastHit hit;
+        RaycastHit[] hits;
 
         lineRenderer.SetPosition(0, ray.origin);
         lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
-        if (Physics.Raycast(ray, out hit))
+        hits = Physics.RaycastAll(ray);
+        bool hitted = false;
+        for (int i = 0; i < hits.Length; i++)
         {
-            Rigidbody body = hit.collider.GetComponent<Rigidbody>();
-            if (body)
+            RaycastHit hit = hits[i];
+            if (mask == (mask | 1 << hit.collider.gameObject.layer))
             {
-                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
-                lastTouched = hit.collider.gameObject;
-               // Debug.Log("Hit");
+                
+                
+                    //Debug.Log("Hit");
+                    hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                    lastTouched = hit.collider.gameObject;
+                    hitted = true;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                   Debug.Log("Hit");
+                    Transform parent = hit.collider.gameObject.transform.parent.parent;
+                        if (parent)
+                        {
+                            Prisioner prisioner = parent.GetComponent<Prisioner>();
+                            if (prisioner)
+                            {
+                                prisioner.StopSussyBehaviour();
+                            }
+                        }
+                    }
+                 
+                    break;
+                
             }
-            else
-            {
-                if (lastTouched != null)
-                {
-                    lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
-                }
-            }
-
+        }
+        if (!hitted && lastTouched != null)
+        {
+            lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
+            lastTouched = null;
         }
     }
 }
