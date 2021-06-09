@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2126748141}
   - component: {fileID: 8070234919652232084}
   - component: {fileID: 1864222829}
+  - component: {fileID: 732132403}
   m_Layer: 0
   m_Name: Prisioner
   m_TagString: Prisioner
@@ -78,10 +79,11 @@ MonoBehaviour:
   markedFighting: 0
   fightingPos: {x: 0, y: 0, z: 0}
   currentBehaviour: 0
-  EscapeChance: 1
-  fightChance: 20
+  EscapeChance: 10
+  fightChance: 5
   fightCoolDown: 5
-  escapePos: {x: 0, y: 0, z: 0}
+  escapePos: {x: 9, y: 0, z: 9}
+  fightImIn: {fileID: 0}
   prisionManagerScript: {fileID: 0}
 --- !u!95 &2126748140
 Animator:
@@ -125,7 +127,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 3
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1864222829
 Rigidbody:
@@ -143,6 +145,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &732132403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6478079948414766582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847200092c577b94890fdd951280bc09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftFoot: {fileID: 1774407912856334402}
+  rightFoot: {fileID: 6324526845225481802}
+  footStepVolume: 1
+  sound: 0
 --- !u!136 &587978764629465521
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -525,6 +543,18 @@ PrefabInstance:
 --- !u!4 &2061654305604565285 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: deaf95309d189f141a20f59e58dbb472,
+    type: 3}
+  m_PrefabInstance: {fileID: 6478079950274384447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1774407912856334402 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4717861441143497341, guid: deaf95309d189f141a20f59e58dbb472,
+    type: 3}
+  m_PrefabInstance: {fileID: 6478079950274384447}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6324526845225481802 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1018931497261425781, guid: deaf95309d189f141a20f59e58dbb472,
     type: 3}
   m_PrefabInstance: {fileID: 6478079950274384447}
   m_PrefabAsset: {fileID: 0}
