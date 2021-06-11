@@ -45,6 +45,7 @@ public class PrisionManager : MonoBehaviour
     #region UI
     public GameObject playerHealthBar;
     public GameObject TimeBar;
+    public GameObject[] candles;
     #endregion UI
 
     void Start()
@@ -96,6 +97,21 @@ public class PrisionManager : MonoBehaviour
 
     void Update()
     {
+        float percent = currentGameTime / maxGameTime;
+        int index = (int)(candles.Length * percent);
+        for (int i = 0; i < candles.Length; i++)
+        {
+            if (i == index)
+            {
+                candles[i].SetActive(true);
+            }
+            else
+            {
+                candles[i].SetActive(false);
+            }
+        }
+
+
         currentGameTime += Time.deltaTime;
         for (int i=0; i<CurrentFights.Count; i++)
         {
