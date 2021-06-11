@@ -117,6 +117,14 @@ public class Prisioner : MonoBehaviour
         }
 
         animator.SetFloat("Blend", blendValue);
+        if (currentBehaviour == susBehaviour.fighting)
+        {
+            animator.SetBool("Fighting", true);
+        }
+        else
+        {
+            animator.SetBool("Fighting", false);
+        }
     }
 
      void OnTriggerEnter(Collider other)
