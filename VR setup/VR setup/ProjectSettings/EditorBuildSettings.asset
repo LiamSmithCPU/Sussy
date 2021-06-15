@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Other Scenes/VR/VRLose.unity
     guid: 6f28aa4e4ccef754aa01a44233dc2f03
   - enabled: 1
-    path: Assets/Scenes/BuildScene.unity
-    guid: ea02dbbb3570c004ab540bcc8bb85c71
+    path: Assets/Scenes/WIP Scenes/Prisoner invisible wall.unity
+    guid: cfa19d1564b6e6a439ea26dae35252fc
   m_configObjects: {}

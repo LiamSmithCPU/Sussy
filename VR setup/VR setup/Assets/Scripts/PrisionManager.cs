@@ -23,6 +23,8 @@ public class PrisionManager : MonoBehaviour
     // list of when each feature gets added
 
     public List<Prisioner> AllPrisioner;
+    
+    public List<Transform> wayPoints;
 
     public List<fight> CurrentFights;
 
@@ -31,6 +33,7 @@ public class PrisionManager : MonoBehaviour
     public float currentPrisionDamage;
 
     public GameObject PhysicalPrisionerList;
+    public GameObject wayPointObject;
 
     public float maxFightLength;
     public float passiveFightDamage = 1;
@@ -51,6 +54,8 @@ public class PrisionManager : MonoBehaviour
     void Start()
     {
         setUpPrisioners();
+
+        SetUpWayPoints();
     }
 
     void setUpPrisioners()
@@ -61,6 +66,21 @@ public class PrisionManager : MonoBehaviour
           
         }
             
+    }
+
+    void SetUpWayPoints()
+    {
+        for (int i = 0; i < wayPointObject.transform.childCount; i++)
+        {
+            wayPoints.Add(wayPointObject.transform.GetChild(i).transform);
+
+        }
+    }
+
+    public Transform GetRandomWayPoint()
+    {
+        int index = Random.Range(0, wayPoints.Count);
+        return wayPoints[index];
     }
 
     void UpdateUI()

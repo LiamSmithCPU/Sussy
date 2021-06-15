@@ -13,7 +13,6 @@ public enum susBehaviour
 public class Prisioner : MonoBehaviour
 {
     #region BTS
-    public Transform exit;
     public Vector3 target;
     public Vector2 size;
     public NavMeshAgent agent;
@@ -33,7 +32,7 @@ public class Prisioner : MonoBehaviour
 
     public float fightCoolDown = 5;
 
-    public Vector3 escapePos;
+    public Transform escapePos;
 
     public fight fightImIn;
 
@@ -42,15 +41,15 @@ public class Prisioner : MonoBehaviour
     public PrisionManager prisionManagerScript;
     void Start()
     {
-       animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         navMeshPath = new NavMeshPath();
-        Vector3 pos;
-        pos.x = Random.Range(-size.x / 2, size.x / 2);
-        pos.z = Random.Range(-size.y / 2, size.y / 2);
-        pos.y = 0.5f;
-        transform.position = pos;
+        //Vector3 pos;
+        //pos.x = Random.Range(-size.x / 2, size.x / 2);
+        //pos.z = Random.Range(-size.y / 2, size.y / 2);
+        //pos.y = 0.5f;
+        //transform.position = pos;
 
-        GetRandomTarget();
+        transform.position = prisionManagerScript.GetRandomWayPoint().position;
 
         agent.CalculatePath(target, navMeshPath);
     }
@@ -70,7 +69,7 @@ public class Prisioner : MonoBehaviour
                 }
                 agent.SetDestination(target);
              
-                if (Vector3.Distance(transform.position, target) < 2)
+                if (Vector3.Distance(transform.position, target) < 1)
                 {
                     // stay for a period of time
                     // randomise a idle time
@@ -82,7 +81,7 @@ public class Prisioner : MonoBehaviour
                     {
                        // Debug.Log("trying to escape");
                         currentBehaviour = susBehaviour.escaping;
-                        agent.CalculatePath(escapePos, navMeshPath);
+                        agent.CalculatePath(escapePos.position, navMeshPath);
                     }
                     else
                     {
@@ -90,13 +89,13 @@ public class Prisioner : MonoBehaviour
                     }
 
                 }
-                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(255, 255, 255));
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 0));
                 break;
             case susBehaviour.escaping:
                 
-                agent.SetDestination(escapePos);
+                agent.SetDestination(escapePos.position);
 
-                if(Vector3.Distance(transform.position, escapePos) < 3)
+                if(Vector3.Distance(transform.position, escapePos.position) < 3)
                 {
                     Debug.Log("Escaped");
                     prisionManagerScript.currentPrisionDamage += prisionManagerScript.escapedPrisonerDamage;
@@ -107,6 +106,8 @@ public class Prisioner : MonoBehaviour
             case susBehaviour.fighting:
                 agent.CalculatePath(fightingPos, navMeshPath);
                 agent.SetDestination(fightingPos);
+
+                //agent.transform.localRotation = Vector3.RotateTowards(agent, fightingPos, );
 
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 150, 255));
               
@@ -149,9 +150,10 @@ public class Prisioner : MonoBehaviour
 
     public void GetRandomTarget()
     {
-        target.x = Random.Range(-size.x / 2, size.x / 2);
-        target.z = Random.Range(-size.y / 2, size.y / 2);
-        target.y = 0.5f;
+        //target.x = Random.Range(-size.x / 2, size.x / 2);
+        //target.z = Random.Range(-size.y / 2, size.y / 2);
+        //target.y = 0.0f;
+        target = prisionManagerScript.GetRandomWayPoint().position;
     }
 
     public void StopSussyBehaviour()
