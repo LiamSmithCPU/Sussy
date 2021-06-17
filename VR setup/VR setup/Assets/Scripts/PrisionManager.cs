@@ -58,6 +58,9 @@ public class PrisionManager : MonoBehaviour
     #endregion UI
 
 
+    public List<Sound> engageSounds;
+    public List<Sound> disengageSounds;
+
     [Range(0, 1)]
     public float engageSoundVolume;
     [Range(0, 1)]
@@ -151,8 +154,8 @@ public class PrisionManager : MonoBehaviour
             A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
             B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
 
-
-            SoundManager.current.PlaySound(Sound.EngageFight, middleOfFight, engageSoundVolume);
+            int index = Random.Range(0, engageSounds.Count - 1);
+            SoundManager.current.PlaySound(engageSounds[index], middleOfFight, engageSoundVolume);
             //Debug.Log(middleOfFight);
         }
     }
@@ -200,7 +203,8 @@ public class PrisionManager : MonoBehaviour
                 Prisioner b = CurrentFights[i].fighterB;
                 Vector3 middleOfFight = new Vector3((a.transform.position.x + b.transform.position.x) / 2, (a.transform.position.y + b.transform.position.y) / 2, (a.transform.position.z + b.transform.position.z) / 2);
 
-                SoundManager.current.PlaySound(Sound.DisengageFight, middleOfFight, disengageSoundVolume);
+                int index = Random.Range(0, disengageSounds.Count - 1);
+                SoundManager.current.PlaySound(disengageSounds[index], middleOfFight, disengageSoundVolume);
             }
 
         }

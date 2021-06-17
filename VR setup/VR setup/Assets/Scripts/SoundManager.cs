@@ -5,8 +5,12 @@ using UnityEngine;
 public enum Sound
 {
     FootStep,
-    EngageFight,
-    DisengageFight
+    EngageFight1,
+    EngageFight2,
+    EngageFight3,
+    DisengageFight1,
+    DisengageFight2,
+    DisengageFight3
 }
 
 public class SoundManager : MonoBehaviour
@@ -23,8 +27,13 @@ public class SoundManager : MonoBehaviour
         current = this;
 
         audioMap.Add(Sound.FootStep, Resources.Load<AudioClip>("Sounds/FootStep"));
-        audioMap.Add(Sound.EngageFight, Resources.Load<AudioClip>("Sounds/EngageFight"));
-        audioMap.Add(Sound.DisengageFight, Resources.Load<AudioClip>("Sounds/DisengageFight"));
+        audioMap.Add(Sound.EngageFight1, Resources.Load<AudioClip>("Sounds/Engage Fight Sounds/EngageFight 1"));
+        audioMap.Add(Sound.EngageFight2, Resources.Load<AudioClip>("Sounds/Engage Fight Sounds/EngageFight 2"));
+        audioMap.Add(Sound.EngageFight3, Resources.Load<AudioClip>("Sounds/Engage Fight Sounds/EngageFight 3"));
+
+        audioMap.Add(Sound.DisengageFight1, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 1"));
+        audioMap.Add(Sound.DisengageFight2, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 2"));
+        audioMap.Add(Sound.DisengageFight3, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 3"));
     }
 
     AudioSource PlayClipAt(AudioClip clip, Vector3 pos, float volume)
@@ -36,6 +45,7 @@ public class SoundManager : MonoBehaviour
         // set other aSource properties here, if desired
         aSource.volume = volume;
         aSource.dopplerLevel = 0;
+        aSource.spatialBlend = 1;
         aSource.Play(); // start the sound
         Destroy(tempGO, clip.length); // destroy object after clip duration
         return aSource; // return the AudioSource reference

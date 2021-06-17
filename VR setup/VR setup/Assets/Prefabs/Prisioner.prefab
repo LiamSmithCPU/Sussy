@@ -82,7 +82,7 @@ MonoBehaviour:
   fightChance: 20
   fightCoolDown: 5
   fightCoolDownMax: 8
-  escapePos: {fileID: 0}
+  escapePos: {x: 0, y: 0, z: 0}
   fightImIn: {fileID: 0}
   prisionManagerScript: {fileID: 0}
   group: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftFoot: {fileID: 1774407912856334402}
   rightFoot: {fileID: 6324526845225481802}
-  footStepVolume: 0.05
+  footStepVolume: 0.3
   sound: 0
 --- !u!136 &587978764629465521
 CapsuleCollider:
