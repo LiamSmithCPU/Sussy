@@ -23,9 +23,11 @@ public class PrisionManager : MonoBehaviour
 
     // list of when each feature gets added
 
-    public List<Prisioner> AllPrisioner;
+    public List<List<Prisioner>> AllPrisioner;
     
-    public List<Transform> wayPoints;
+    public List<List<Transform>> wayPoints;
+
+    public List<List<Transform>> exits;
 
     public List<fight> CurrentFights;
 
@@ -35,6 +37,7 @@ public class PrisionManager : MonoBehaviour
 
     public GameObject PhysicalPrisionerList;
     public GameObject wayPointObject;
+    public GameObject exitObject;
 
     public float maxFightLength;
     public float passiveFightDamage = 1;
@@ -62,36 +65,60 @@ public class PrisionManager : MonoBehaviour
 
     void Start()
     {
-        setUpPrisioners();
-
         SetUpWayPoints();
+        SetUpPrisioners();
+        SetExits();
+       
 
         originalFirePos = fireParticle.transform.localPosition;
     }
 
-    void setUpPrisioners()
+    void SetExits()
     {
+        exits = new List<List<Transform>>();
+        for (int i = 0; i < exitObject.transform.childCount; i++)
+        {
+            exits.Add(new List<Transform>());
+            for (int j = 0; j < exitObject.transform.GetChild(i).childCount; j++)
+            {
+                exits[i].Add(exitObject.transform.GetChild(i).GetChild(j).GetComponent<Transform>());
+            }
+        }
+    }
+
+    void SetUpPrisioners()
+    {
+        AllPrisioner = new List<List<Prisioner>>();
         for (int i = 0; i < PhysicalPrisionerList.transform.childCount; i++)
         {
-            AllPrisioner.Add(PhysicalPrisionerList.transform.GetChild(i).GetComponent<Prisioner>());
-            NavMeshAgent agent = PhysicalPrisionerList.transform.GetChild(i).GetComponent<NavMeshAgent>();
-            agent.avoidancePriority = i;
+            AllPrisioner.Add(new List<Prisioner>());
+            for (int j = 0; j < PhysicalPrisionerList.transform.GetChild(i).childCount; j++)
+            {
+                AllPrisioner[i].Add(PhysicalPrisionerList.transform.GetChild(i).GetChild(j).GetComponent<Prisioner>());
+                PhysicalPrisionerList.transform.GetChild(i).GetChild(j).GetComponent<Prisioner>().group = i;
+            }
+            // NavMeshAgent agent = PhysicalPrisionerList.transform.GetChild(i).GetComponent<NavMeshAgent>();
+            // agent.avoidancePriority = i;
         }
     }
 
     void SetUpWayPoints()
     {
+        wayPoints = new List<List<Transform>>();
         for (int i = 0; i < wayPointObject.transform.childCount; i++)
         {
-            wayPoints.Add(wayPointObject.transform.GetChild(i).transform);
-
+            wayPoints.Add(new List<Transform>());
+            for (int j = 0; j < wayPointObject.transform.GetChild(i).childCount; j++)
+            {
+                wayPoints[i].Add(wayPointObject.transform.GetChild(i).GetChild(j).transform);
+            }
         }
     }
 
-    public Transform GetRandomWayPoint()
+    public Transform GetRandomWayPoint(int group)
     {
-        int index = Random.Range(0, wayPoints.Count);
-        return wayPoints[index];
+        int index = Random.Range(0, wayPoints[group].Count - 1);
+        return wayPoints[group][index];
     }
 
     void UpdateUI()

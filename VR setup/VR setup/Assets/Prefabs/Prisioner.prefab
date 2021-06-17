@@ -81,9 +81,11 @@ MonoBehaviour:
   EscapeChance: 10
   fightChance: 20
   fightCoolDown: 5
+  fightCoolDownMax: 8
   escapePos: {fileID: 0}
   fightImIn: {fileID: 0}
   prisionManagerScript: {fileID: 0}
+  group: 0
 --- !u!95 &2126748140
 Animator:
   serializedVersion: 3

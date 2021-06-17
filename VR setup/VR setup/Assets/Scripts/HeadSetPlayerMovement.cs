@@ -145,7 +145,7 @@ public class HeadSetPlayerMovement : MonoBehaviour
                 lastTouched = hit.collider.gameObject;
                 hitted = true;
                
-                    Debug.Log("Hit");
+                    //Debug.Log("Hit");
                     Transform parent = hit.collider.gameObject.transform.parent.parent;
                     if (parent)
                     {

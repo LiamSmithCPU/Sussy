@@ -33,13 +33,15 @@ public class Prisioner : MonoBehaviour
     public float fightCoolDown = 5;
     public float fightCoolDownMax = 8;
 
-    public Transform escapePos;
+    public Vector3 escapePos;
 
     public fight fightImIn;
 
     #endregion Stats
 
     public PrisionManager prisionManagerScript;
+
+    public int group;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -49,8 +51,8 @@ public class Prisioner : MonoBehaviour
         //pos.z = Random.Range(-size.y / 2, size.y / 2);
         //pos.y = 0.5f;
         //transform.position = pos;
-
-        transform.position = prisionManagerScript.GetRandomWayPoint().position;
+        transform.position = prisionManagerScript.GetRandomWayPoint(group).position;
+        GetRandomTarget();
 
         agent.CalculatePath(target, navMeshPath);
     }
@@ -82,7 +84,7 @@ public class Prisioner : MonoBehaviour
                     {
                        // Debug.Log("trying to escape");
                         currentBehaviour = susBehaviour.escaping;
-                        agent.CalculatePath(escapePos.position, navMeshPath);
+                        //agent.CalculatePath(escapePos.position, navMeshPath);
                     }
                     else
                     {
@@ -93,12 +95,25 @@ public class Prisioner : MonoBehaviour
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 0));
                 break;
             case susBehaviour.escaping:
-                
-                agent.SetDestination(escapePos.position);
 
-                if(Vector3.Distance(transform.position, escapePos.position) < 3)
+                Vector3 exit = prisionManagerScript.exits[group][0].position;
+                float dist = Vector3.Distance(transform.position, prisionManagerScript.exits[group][0].position);
+
+                for (int i = 1; i < prisionManagerScript.exits[group].Count; i++)
                 {
-                    Debug.Log("Escaped");
+                    float d = Vector3.Distance(transform.position, prisionManagerScript.exits[group][i].position);
+                    if (d < dist)
+                    {
+                        exit = prisionManagerScript.exits[group][i].position;
+                        dist = d;
+                    }
+                }
+                escapePos = exit;
+                agent.SetDestination(escapePos);
+
+                if (Vector3.Distance(transform.position, escapePos) < 3)
+                {
+                    //Debug.Log("Escaped");
                     prisionManagerScript.currentPrisionDamage += prisionManagerScript.escapedPrisonerDamage;
                     currentBehaviour = susBehaviour.escaped;
                 }
@@ -154,7 +169,7 @@ public class Prisioner : MonoBehaviour
         //target.x = Random.Range(-size.x / 2, size.x / 2);
         //target.z = Random.Range(-size.y / 2, size.y / 2);
         //target.y = 0.0f;
-        target = prisionManagerScript.GetRandomWayPoint().position;
+        target = prisionManagerScript.GetRandomWayPoint(group).position;
     }
 
     public void StopSussyBehaviour()
