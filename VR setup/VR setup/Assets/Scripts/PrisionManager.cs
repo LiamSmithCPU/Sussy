@@ -49,14 +49,24 @@ public class PrisionManager : MonoBehaviour
     #region UI
     public GameObject playerHealthBar;
     public GameObject TimeBar;
-    public GameObject[] candles;
+    public GameObject candle;
+    public GameObject fireParticle;
+    public Vector3 originalFirePos;
     #endregion UI
+
+
+    [Range(0, 1)]
+    public float engageSoundVolume;
+    [Range(0, 1)]
+    public float disengageSoundVolume;
 
     void Start()
     {
         setUpPrisioners();
 
         SetUpWayPoints();
+
+        originalFirePos = fireParticle.transform.localPosition;
     }
 
     void setUpPrisioners()
@@ -67,8 +77,6 @@ public class PrisionManager : MonoBehaviour
             NavMeshAgent agent = PhysicalPrisionerList.transform.GetChild(i).GetComponent<NavMeshAgent>();
             agent.avoidancePriority = i;
         }
-
-            
     }
 
     void SetUpWayPoints()
@@ -97,30 +105,39 @@ public class PrisionManager : MonoBehaviour
     {
         // check if they're fighting
 
-        if (A.currentBehaviour!= susBehaviour.fighting && B.currentBehaviour != susBehaviour.fighting)
+        if (A.currentBehaviour != susBehaviour.fighting && B.currentBehaviour != susBehaviour.fighting &&
+            A.currentBehaviour != susBehaviour.escaping && B.currentBehaviour != susBehaviour.escaping)
         {
             CurrentFights.Add(new fight());
-           CurrentFights[CurrentFights.Count - 1].fighterA  = A;
+            CurrentFights[CurrentFights.Count - 1].fighterA = A;
             CurrentFights[CurrentFights.Count - 1].fighterB = B;
             A.currentBehaviour = susBehaviour.fighting;
             B.currentBehaviour = susBehaviour.fighting;
 
             Vector3 middleOfFight = new Vector3((A.transform.position.x + B.transform.position.x) / 2, (A.transform.position.y + B.transform.position.y) / 2, (A.transform.position.z + B.transform.position.z) / 2);
+
             A.fightingPos = middleOfFight;
             B.fightingPos = middleOfFight;
             A.fightImIn = CurrentFights[CurrentFights.Count - 1];
             B.fightImIn = CurrentFights[CurrentFights.Count - 1];
 
-            A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0,0,255));
+            A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
             B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
 
+
+            SoundManager.current.PlaySound(Sound.EngageFight, middleOfFight, engageSoundVolume);
             //Debug.Log(middleOfFight);
         }
     }
 
     void Update()
     {
-        float percent = currentGameTime / maxGameTime;
+        float percent = (maxGameTime - currentGameTime) / maxGameTime;
+
+        candle.transform.localScale = new Vector3(1, percent, 1);
+        fireParticle.transform.localPosition = new Vector3(fireParticle.transform.localPosition.x, originalFirePos.y - 0.611f * (currentGameTime / maxGameTime), fireParticle.transform.localPosition.z);
+
+        /*
         int index = (int)(candles.Length * percent);
         for (int i = 0; i < candles.Length; i++)
         {
@@ -133,7 +150,9 @@ public class PrisionManager : MonoBehaviour
                 candles[i].SetActive(false);
             }
         }
+        */
 
+        
 
         currentGameTime += Time.deltaTime;
         for (int i=0; i<CurrentFights.Count; i++)
@@ -148,6 +167,13 @@ public class PrisionManager : MonoBehaviour
                 CurrentFights[i].fighterA.currentBehaviour = susBehaviour.casual;
                 CurrentFights[i].fighterB.currentBehaviour = susBehaviour.casual;
                 CurrentFights.RemoveAt(i);
+
+
+                Prisioner a = CurrentFights[i].fighterA;
+                Prisioner b = CurrentFights[i].fighterB;
+                Vector3 middleOfFight = new Vector3((a.transform.position.x + b.transform.position.x) / 2, (a.transform.position.y + b.transform.position.y) / 2, (a.transform.position.z + b.transform.position.z) / 2);
+
+                SoundManager.current.PlaySound(Sound.DisengageFight, middleOfFight, disengageSoundVolume);
             }
 
         }

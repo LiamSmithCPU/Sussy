@@ -31,6 +31,7 @@ public class Prisioner : MonoBehaviour
     public float fightChance = 1;
 
     public float fightCoolDown = 5;
+    public float fightCoolDownMax = 8;
 
     public Transform escapePos;
 
@@ -140,8 +141,8 @@ public class Prisioner : MonoBehaviour
 
                 if (randomNumber < fightChance)
                 {
-                    fightCoolDown = 5;
-                    other.transform.GetComponent<Prisioner>().fightCoolDown = 5;
+                    fightCoolDown = fightCoolDownMax;
+                    other.transform.GetComponent<Prisioner>().fightCoolDown = fightCoolDownMax;
                     prisionManagerScript.attemptToStartAFight(this, other.transform.GetComponent<Prisioner>());
                 }
             }
