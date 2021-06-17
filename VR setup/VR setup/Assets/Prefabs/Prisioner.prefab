@@ -49,14 +49,14 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 2
-  m_Acceleration: 1000
+  m_Acceleration: 10000
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.8
+  m_Height: 1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -72,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab34c3950a3c7841a6b605c0db487e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exit: {fileID: 0}
   target: {x: 0, y: 0, z: 0}
   size: {x: 100, y: 100}
   agent: {fileID: 5361479467397798544}
@@ -82,7 +81,7 @@ MonoBehaviour:
   EscapeChance: 10
   fightChance: 20
   fightCoolDown: 5
-  escapePos: {x: 9, y: 0, z: 9}
+  escapePos: {fileID: 0}
   fightImIn: {fileID: 0}
   prisionManagerScript: {fileID: 0}
 --- !u!95 &2126748140

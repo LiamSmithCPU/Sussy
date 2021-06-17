@@ -4,7 +4,9 @@ using UnityEngine;
 
 public enum Sound
 {
-    FootStep
+    FootStep,
+    EngageFight,
+    DisengageFight
 }
 
 public class SoundManager : MonoBehaviour
@@ -21,6 +23,8 @@ public class SoundManager : MonoBehaviour
         current = this;
 
         audioMap.Add(Sound.FootStep, Resources.Load<AudioClip>("Sounds/FootStep"));
+        audioMap.Add(Sound.EngageFight, Resources.Load<AudioClip>("Sounds/EngageFight"));
+        audioMap.Add(Sound.DisengageFight, Resources.Load<AudioClip>("Sounds/DisengageFight"));
     }
 
     AudioSource PlayClipAt(AudioClip clip, Vector3 pos, float volume)
