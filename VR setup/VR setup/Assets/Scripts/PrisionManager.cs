@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 enum featureLevel
 {
@@ -63,8 +64,10 @@ public class PrisionManager : MonoBehaviour
         for (int i = 0; i < PhysicalPrisionerList.transform.childCount; i++)
         {
             AllPrisioner.Add(PhysicalPrisionerList.transform.GetChild(i).GetComponent<Prisioner>());
-          
+            NavMeshAgent agent = PhysicalPrisionerList.transform.GetChild(i).GetComponent<NavMeshAgent>();
+            agent.avoidancePriority = i;
         }
+
             
     }
 
