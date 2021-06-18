@@ -66,6 +66,8 @@ public class PrisionManager : MonoBehaviour
     [Range(0, 1)]
     public float disengageSoundVolume;
 
+    public List<GameObject> tallyMarks;
+
     void Start()
     {
         SetUpWayPoints();
@@ -129,6 +131,21 @@ public class PrisionManager : MonoBehaviour
        // Debug.Log((currentPrisionDamage / maxPrisionDamage));
         playerHealthBar.GetComponent<RectTransform>().localScale = new Vector3((currentPrisionDamage / maxPrisionDamage) , playerHealthBar.GetComponent<RectTransform>().localScale.y, playerHealthBar.GetComponent<RectTransform>().localScale.z);
         TimeBar.GetComponent<RectTransform>().localScale = new Vector3((currentGameTime / maxGameTime), TimeBar.GetComponent<RectTransform>().localScale.y, TimeBar.GetComponent<RectTransform>().localScale.z);
+
+        /*
+       int index = (int)(candles.Length * percent);
+       for (int i = 0; i < candles.Length; i++)
+       {
+           if (i == index)
+           {
+               candles[i].SetActive(true);
+           }
+           else
+           {
+               candles[i].SetActive(false);
+           }
+       }
+       */
     }
 
     public void attemptToStartAFight(Prisioner A, Prisioner B)
@@ -167,6 +184,20 @@ public class PrisionManager : MonoBehaviour
         candle.transform.localScale = new Vector3(1, percent, 1);
         fireParticle.transform.localPosition = new Vector3(fireParticle.transform.localPosition.x, originalFirePos.y - 0.611f * (currentGameTime / maxGameTime), fireParticle.transform.localPosition.z);
 
+
+        float percentage = currentPrisionDamage / maxPrisionDamage;
+        int tallyIndex = (int)(tallyMarks.Count * percentage);
+        for (int i = 0; i < tallyMarks.Count; i++)
+        {
+            if (i >= tallyIndex)
+            {
+                tallyMarks[i].SetActive(false);
+            }
+            else
+            {
+                tallyMarks[i].SetActive(true);
+            }
+        }
         /*
         int index = (int)(candles.Length * percent);
         for (int i = 0; i < candles.Length; i++)
@@ -182,7 +213,7 @@ public class PrisionManager : MonoBehaviour
         }
         */
 
-        
+
 
         currentGameTime += Time.deltaTime;
         for (int i=0; i<CurrentFights.Count; i++)
