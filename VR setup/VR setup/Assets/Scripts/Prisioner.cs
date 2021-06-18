@@ -92,6 +92,7 @@ public class Prisioner : MonoBehaviour
                     }
 
                 }
+                //COLOR 
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 0));
                 break;
             case susBehaviour.escaping:
@@ -117,6 +118,7 @@ public class Prisioner : MonoBehaviour
                     prisionManagerScript.currentPrisionDamage += prisionManagerScript.escapedPrisonerDamage;
                     currentBehaviour = susBehaviour.escaped;
                 }
+                //COLOR 
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 50, 0));
                 break;
             case susBehaviour.fighting:
@@ -125,10 +127,12 @@ public class Prisioner : MonoBehaviour
 
                 //agent.transform.localRotation = Vector3.RotateTowards(agent, fightingPos, );
 
+                //COLOR 
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 150, 255));
               
                 break;
             case susBehaviour.escaped:
+                //COLOR 
                 this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 255, 0));
                 break;
         }

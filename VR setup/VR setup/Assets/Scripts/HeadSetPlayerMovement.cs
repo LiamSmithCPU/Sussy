@@ -141,7 +141,8 @@ public class HeadSetPlayerMovement : MonoBehaviour
             if (mask == (mask | 1 << hit.collider.gameObject.layer))
             { if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
                 {
-                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                    //COLOR 
+                    hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
                 lastTouched = hit.collider.gameObject;
                 hitted = true;
                
@@ -163,6 +164,7 @@ public class HeadSetPlayerMovement : MonoBehaviour
         }
         if (!hitted && lastTouched != null)
         {
+            //COLOR 
             lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
             lastTouched = null;
         }

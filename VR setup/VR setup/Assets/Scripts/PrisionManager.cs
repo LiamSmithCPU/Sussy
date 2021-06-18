@@ -151,7 +151,9 @@ public class PrisionManager : MonoBehaviour
             A.fightImIn = CurrentFights[CurrentFights.Count - 1];
             B.fightImIn = CurrentFights[CurrentFights.Count - 1];
 
+            //COLOR
             A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
+            //COLOR
             B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
 
             int index = Random.Range(0, engageSounds.Count - 1);
