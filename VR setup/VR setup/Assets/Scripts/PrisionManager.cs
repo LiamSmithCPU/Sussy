@@ -61,6 +61,7 @@ public class PrisionManager : MonoBehaviour
     public List<Sound> engageSounds;
     public List<Sound> disengageSounds;
 
+
     [Range(0, 1)]
     public float engageSoundVolume;
     [Range(0, 1)]
@@ -129,8 +130,8 @@ public class PrisionManager : MonoBehaviour
     void UpdateUI()
     {
        // Debug.Log((currentPrisionDamage / maxPrisionDamage));
-        playerHealthBar.GetComponent<RectTransform>().localScale = new Vector3((currentPrisionDamage / maxPrisionDamage) , playerHealthBar.GetComponent<RectTransform>().localScale.y, playerHealthBar.GetComponent<RectTransform>().localScale.z);
-        TimeBar.GetComponent<RectTransform>().localScale = new Vector3((currentGameTime / maxGameTime), TimeBar.GetComponent<RectTransform>().localScale.y, TimeBar.GetComponent<RectTransform>().localScale.z);
+        // playerHealthBar.GetComponent<RectTransform>().localScale = new Vector3((currentPrisionDamage / maxPrisionDamage) , playerHealthBar.GetComponent<RectTransform>().localScale.y, playerHealthBar.GetComponent<RectTransform>().localScale.z);
+        // TimeBar.GetComponent<RectTransform>().localScale = new Vector3((currentGameTime / maxGameTime), TimeBar.GetComponent<RectTransform>().localScale.y, TimeBar.GetComponent<RectTransform>().localScale.z);
 
         /*
        int index = (int)(candles.Length * percent);
@@ -169,9 +170,9 @@ public class PrisionManager : MonoBehaviour
             B.fightImIn = CurrentFights[CurrentFights.Count - 1];
 
             //COLOR
-            A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
+            // A.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
             //COLOR
-            B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
+            // B.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 255));
 
             int index = Random.Range(0, engageSounds.Count - 1);
             SoundManager.current.PlaySound(engageSounds[index], middleOfFight, engageSoundVolume);

@@ -10,7 +10,9 @@ public enum Sound
     EngageFight3,
     DisengageFight1,
     DisengageFight2,
-    DisengageFight3
+    DisengageFight3,
+    Escape,
+    Escaped
 }
 
 public class SoundManager : MonoBehaviour
@@ -34,6 +36,9 @@ public class SoundManager : MonoBehaviour
         audioMap.Add(Sound.DisengageFight1, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 1"));
         audioMap.Add(Sound.DisengageFight2, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 2"));
         audioMap.Add(Sound.DisengageFight3, Resources.Load<AudioClip>("Sounds/Disengage Fight Sounds/DisengageFight 3"));
+
+        audioMap.Add(Sound.Escape, Resources.Load<AudioClip>("Sounds/New Sounds/Run Alarm Sound"));
+        audioMap.Add(Sound.Escaped, Resources.Load<AudioClip>("Sounds/New Sounds/Game Win"));
     }
 
     AudioSource PlayClipAt(AudioClip clip, Vector3 pos, float volume)

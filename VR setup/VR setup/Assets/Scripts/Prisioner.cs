@@ -42,6 +42,18 @@ public class Prisioner : MonoBehaviour
     public PrisionManager prisionManagerScript;
 
     public int group;
+    public Color baseColor;
+    public Color escapingColor;
+    public Color fightingColor;
+    public Color escapedColor;
+
+    public Sound escapeSound;
+    [Range(0, 1)]
+    public float escapeSoundVolume;
+
+    public Sound escapedSound;
+    [Range(0, 1)]
+    public float escapedSoundVolume;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -84,6 +96,7 @@ public class Prisioner : MonoBehaviour
                     {
                        // Debug.Log("trying to escape");
                         currentBehaviour = susBehaviour.escaping;
+                        SoundManager.current.PlaySound(escapeSound, transform.position, escapeSoundVolume);
                         //agent.CalculatePath(escapePos.position, navMeshPath);
                     }
                     else
@@ -93,7 +106,7 @@ public class Prisioner : MonoBehaviour
 
                 }
                 //COLOR 
-                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 0, 0));
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", baseColor);
                 break;
             case susBehaviour.escaping:
 
@@ -117,9 +130,11 @@ public class Prisioner : MonoBehaviour
                     //Debug.Log("Escaped");
                     prisionManagerScript.currentPrisionDamage += prisionManagerScript.escapedPrisonerDamage;
                     currentBehaviour = susBehaviour.escaped;
+                    SoundManager.current.PlaySound(escapedSound, transform.position, escapedSoundVolume);
+                    // gameObject.SetActive(false);
                 }
                 //COLOR 
-                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 50, 0));
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", escapingColor);
                 break;
             case susBehaviour.fighting:
                 agent.CalculatePath(fightingPos, navMeshPath);
@@ -128,12 +143,12 @@ public class Prisioner : MonoBehaviour
                 //agent.transform.localRotation = Vector3.RotateTowards(agent, fightingPos, );
 
                 //COLOR 
-                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 150, 255));
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", fightingColor);
               
                 break;
             case susBehaviour.escaped:
                 //COLOR 
-                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", new Color(0, 255, 0));
+                this.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetColor("_Color", escapedColor);
                 break;
         }
 

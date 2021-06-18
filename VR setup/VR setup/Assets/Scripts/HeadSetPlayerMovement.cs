@@ -122,30 +122,31 @@ public class HeadSetPlayerMovement : MonoBehaviour
 
         if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
         {
-            lineRenderer.SetColors(new Color(0, 0, 0), new Color(255, 255, 255));
+            lineRenderer.SetColors(new Color(0, 0, 0), new Color(0, 0, 0));
         }
         else
         {
-            lineRenderer.SetColors(new Color(0, 255, 0), new Color(0, 255, 0));
+            lineRenderer.SetColors(new Color(0, 0, 1), new Color(0, 0, 1));
         }
 
 
-            lineRenderer.SetPosition(0, ray.origin);
-            lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
+        lineRenderer.SetPosition(0, ray.origin);
+        lineRenderer.SetPosition(1, ray.origin + 100 * ray.direction);
 
         hits = Physics.RaycastAll(ray);
-        bool hitted = false;
+        //bool hitted = false;
         for (int i = 0; i < hits.Length; i++)
         {
             RaycastHit hit = hits[i];
             if (mask == (mask | 1 << hit.collider.gameObject.layer))
-            { if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
+                //COLOR 
+                if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
                 {
-                    //COLOR 
-                    hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol);
-                lastTouched = hit.collider.gameObject;
-                hitted = true;
-               
+                    //hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_Color", highlightCol); 
+                    //lastTouched = hit.collider.gameObject;
+                    //hitted = true;
                     //Debug.Log("Hit");
                     Transform parent = hit.collider.gameObject.transform.parent.parent;
                     if (parent)
@@ -158,16 +159,16 @@ public class HeadSetPlayerMovement : MonoBehaviour
                     }
                 }
 
-                break;
+                //break;
 
             }
         }
-        if (!hitted && lastTouched != null)
-        {
-            //COLOR 
-            lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
-            lastTouched = null;
-        }
+        //if (!hitted && lastTouched != null)
+        //{
+        //    //COLOR 
+        //    lastTouched.GetComponent<Renderer>().material.SetColor("_Color", passiveCol);
+        //    lastTouched = null;
+        //}
     }
 }
 
